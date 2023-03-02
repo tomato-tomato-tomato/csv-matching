@@ -22,3 +22,4 @@ df2_trimmed <- df2_trimmed[1:min_length, ]
 # Save trimmed data frames as new CSV files
 write.csv(df1_trimmed, "file1_trimmed2.csv", row.names = FALSE)
 write.csv(df2_trimmed, "file2_trimmed2.csv", row.names = FALSE)
+
