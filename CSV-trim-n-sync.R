@@ -1,8 +1,11 @@
 # Set the directory where the files are stored
-setwd("/users/manvisethi/FIT/cleancsvs")
+setwd("/data/netapp02/work/Manvi_Sethi/FIT/clap_trimmed_csvs/")
 
 # Create a vector of all the participant IDs in the directory
-participant_ids <- unique(gsub("_[cm]_.*", "", list.files(pattern = "[cm]_.*_clean.csv")))
+participant_ids <- unique(gsub("_[cm]_.*", "", list.files(pattern = "[cm]_.*_cltr.csv")))
+
+# Set the output directory
+output_dir <- "/data/netapp02/work/Manvi_Sethi/synced_csvs"
 
 # Loop through each participant ID
 for (participant_id in participant_ids) {
@@ -11,8 +14,8 @@ for (participant_id in participant_ids) {
   for (event in c("epi", "psi")) {
     
     # Get the filenames for the child and mother files for the current participant ID and event
-    child_filename <- paste0(participant_id, "_c_", event, "_clean.csv")
-    mother_filename <- paste0(participant_id, "_m_", event, "_clean.csv")
+    child_filename <- paste0(participant_id, "_c_", event, "_cltr.csv")
+    mother_filename <- paste0(participant_id, "_m_", event, "_cltr.csv")
     
     # Check if both child and mother files exist for the current participant ID and event
     if (child_filename %in% list.files() & mother_filename %in% list.files()) {
@@ -45,18 +48,12 @@ for (participant_id in participant_ids) {
       df_child_trimmed <- df_child_trimmed[1:min_length, ]
       df_mother_trimmed <- df_mother_trimmed[1:min_length, ]
       
-      # Save trimmed data frames as new CSV files
-      write.csv(df_child_trimmed, paste0(participant_id, "_c_", event, "_synced.csv"), row.names = FALSE)
-      write.csv(df_mother_trimmed, paste0(participant_id, "_m_", event, "_synced.csv"), row.names = FALSE)
-      
-      
-      
+      # Save trimmed data frames as new CSV files in the output directory
+      write.csv(df_child_trimmed, file.path(output_dir, paste0(participant_id, "_c_", event, "_synced.csv")), row.names = FALSE)
+      write.csv(df_mother_trimmed, file.path(output_dir, paste0(participant_id, "_m_", event, "_synced.csv")), row.names = FALSE)
       
     }
     
   }
   
 }
-
-
-
